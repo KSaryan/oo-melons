@@ -4,6 +4,13 @@ import random
 from datetime import datetime
 
 
+class TooManyMelonsError(ValueError):
+    """ Raises error if melon order > 100. """
+
+    def __init__(self):
+        super(TooManyMelonsError, self).__init__("Too many melons ordered!")
+
+
 class AbstractMelonOrder(object):
     """ All Melon orders """
 
@@ -11,6 +18,10 @@ class AbstractMelonOrder(object):
         """ Initialize melon order attributes. """
         self.species = species
         self.qty = qty
+
+        if self.qty > 100:
+            raise TooManyMelonsError()
+
         self.shipped = False
         self.tax = tax
         self.order_type = order_type
@@ -80,3 +91,4 @@ class GovernmentMelonOrder(AbstractMelonOrder):
 
     def mark_inspection(self, passed):
         self.passed_inspection = passed
+
